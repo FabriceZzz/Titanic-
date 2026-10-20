@@ -39,13 +39,11 @@
 ```bash
 pip install -r requirements.txt
 
-⚙️ 自动化运维与调度 (MLOps)
 
+
+### ⚙️ 自动化运维与调度 (MLOps)
 编写了工程化的 clean.py 脚本，实现数据清洗逻辑。
-
 编写了完整的异常捕获与 logging 日志记录机制，确保后台运行报错可追溯。
-
 在 Linux (WSL Ubuntu) 环境下建立虚拟环境隔离依赖。
-
 通过 crontab 配置定时任务，实现每天凌晨 2 点无人值守自动清洗数据。
 
