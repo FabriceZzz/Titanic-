@@ -1,0 +1,46 @@
+一、 目录与基础导航（你在哪，你要去哪）
+命令    原意    实际作用 / 你用它做了什么
+pwd    Print Working Directory    打印出你现在所在的绝对路径（比如 /home/fabrice/titanic_ops）。
+cd ~    Change Directory    切换目录。~ 代表你的家目录（/home/fabrice）。
+cd titanic_ops    切换目录    进入当前目录下的 titanic_ops 文件夹。
+mkdir -p ~/titanic_ops    Make Directory    创建文件夹。-p 代表如果父目录不存在，就一并创建，不会报错。
+ls    List    列出当前目录下的文件和文件夹。
+ls -l    List long    列出文件，并且显示详细信息（大小、时间、权限）。
+
+二、 文件操作与编辑器（写代码，看结果）
+命令    原意    实际作用 / 你用它做了什么
+cp 源路径 目标路径    Copy    复制文件。你用它把 Windows 桌面的 train.csv 复制到了 Linux 里。
+nano 文件名    （编辑器名称）    Linux 内置的文本编辑器。你用它写了 clean.py 和 crontab。
+(操作口诀：Ctrl+O 保存，Enter 确认，Ctrl+X 退出)
+rm 文件名    Remove    删除文件。你用它删掉了错误生成的 ~/clean.log。
+cat 文件名    Catenate    一次性把文件内容全打印到屏幕上。你用它看了 clean.log 里的报错。
+
+三、 虚拟环境与运行（隔离环境，跑代码）
+命令    原意    实际作用 / 你用它做了什么
+source ~/myenv/bin/activate    Source (加载)    激活虚拟环境。敲完之后终端前面会出现 (myenv)，代表你现在用的 Python 和包都在这个隔离环境里。
+python clean.py    （执行程序）    调用 Python 解释器，运行你的清洗脚本。
+
+四、 定时任务与排错（自动化与监控的灵魂）
+命令    原意    实际作用 / 你用它做了什么
+tail -f 文件名    Tail (尾巴) + Follow    实时监控文件。-f 会让屏幕一直卡在那里，只要有新日志写入，就立刻显示。是监控排错的神器。
+crontab -e    Cron Table Edit    打开当前用户的定时任务配置文件进行编辑。
+crontab -l    Cron Table List    列出当前用户已经配置了哪些定时任务。
+service cron status    （服务状态）    查看 cron 这个后台服务有没有在正常运行。
+sudo service cron start    （启动服务）    如果你发现 cron 没运行，用它来启动（sudo 代表管理员权限）。
+
+五、 两个极其重要的特殊符号/语法
+1. 逻辑与 && （在定时任务里大显神威）
+你在 crontab -e 里最后写的这行：
+
+text
+* * * * * cd /home/fabrice/titanic_ops && /home/fabrice/myenv/bin/python clean.py
+&& 的含义：如果前面的命令成功了，就执行后面的命令。
+
+实战意义：因为 cron 默认在家目录跑，必须先用 cd 切到项目目录，然后（&&）再用 Python 去执行 clean.py。如果不加 &&，它会在家目录里找 clean.py，直接报错。
+
+2. 定时任务的时间表（Cron 语法）
+* * * * * 分别代表：分 时 日 月 周。
+
+* * * * *：每分钟跑一次（用来测试）。
+
+0 2 * * *：每天凌晨 2 点跑一次（生产环境的标准配置）。
