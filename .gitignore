@@ -1,0 +1,6 @@
+# 忽略数据文件
+train.csv
+
+# 忽略 Python 和 Jupyter 缓存
+__pycache__/
+.ipynb_checkpoints/
